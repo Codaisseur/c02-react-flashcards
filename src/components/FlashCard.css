@@ -1,0 +1,13 @@
+.FlashCard {
+  display: flex;
+  flex: 1;
+  padding: 80px 40px;
+  border: 1px solid #000;
+  cursor: pointer;
+  margin: 2rem;
+}
+
+.FlashCard.flipped {
+  color: #fff;
+  background: #000;
+}
