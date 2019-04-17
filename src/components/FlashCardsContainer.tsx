@@ -1,5 +1,6 @@
 import React from 'react';
 import FlashCard from './FlashCard';
+import './FlashCardContainer.css';
 
 export interface IFlashCard {
   id: number;
@@ -25,24 +26,34 @@ class FlashCardsContainer extends React.Component<
       {
         front: "Wanneer zou je PropTypes gebruiken voor type safety als die al door TypeScript interfaces wordt gewaarborgd?",
         back: "Als je components ook in JS projecten worden gebruikt.",
+      },
+      {
+        front: "Met welk commando creëer je een nieuwe React app met TypeScript support?",
+        back: "npx create-react-app --typescript",
+      },
+      {
+        front: "Wanneer zou je PropTypes gebruiken voor type safety als die al door TypeScript interfaces wordt gewaarborgd?",
+        back: "Als je components ook in JS projecten worden gebruikt.",
+      },
+      {
+        front: "Met welk commando creëer je een nieuwe React app met TypeScript support?",
+        back: "npx create-react-app --typescript",
       }
     ].map((c, index) => ({ id: index + 1, ...c, flipped: false }))
   };
 
   public render() {
     return (
-      <>
+      <div className="FlashCardContainer">
         <header>
           <h1>Flashcards</h1>
-          {this.state.cards.map(card =>
-            <FlashCard
-              key={card.id}
-              onFlip={this.flipCard}
-              {...card}
-            />
-          )}
         </header>
-      </>
+        <div className="cards">
+          {this.state.cards.map(card => (
+            <FlashCard key={card.id} onFlip={this.flipCard} {...card} />
+          ))}
+        </div>
+      </div>
     );
   }
 

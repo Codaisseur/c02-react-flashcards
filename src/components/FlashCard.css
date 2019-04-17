@@ -1,13 +1,58 @@
-.FlashCard {
-  display: flex;
-  flex: 1;
-  padding: 80px 40px;
-  border: 1px solid #000;
+.flip-container {
+  perspective: 1000px;
   cursor: pointer;
   margin: 2rem;
 }
 
-.FlashCard.flipped {
+.flip-container:hover .flipper,
+.flip-container.hover .flipper {
+  transform: rotateY(180deg);
+}
+
+.flip-container,
+.front,
+.back {
+  width: 480px;
+  height: 320px;
+}
+
+/* flip speed goes here */
+.flipper {
+  transition: 0.6s;
+  transform-style: preserve-3d;
+
+  position: relative;
+}
+
+/* hide back of pane during swap */
+.front,
+.back {
+  backface-visibility: hidden;
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  align-items: center;
+  border: 1px solid #636363;
+}
+
+.front h3,
+.back h3 {
+  flex: 1;
+  padding: 2rem;
+  text-align: center;
+}
+
+/* front pane, placed above back */
+.front {
+  z-index: 2;
+  /* for firefox 31 */
+  transform: rotateY(0deg);
+}
+
+/* back, initially hidden pane */
+.back {
+  background-color: #636363;
   color: #fff;
-  background: #000;
+  transform: rotateY(180deg);
 }

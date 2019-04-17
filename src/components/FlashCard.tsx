@@ -8,11 +8,15 @@ export interface IFlashCardComponent extends IFlashCard {
 }
 
 const FlashCard = (props: IFlashCardComponent) => (
-  <div
-    className={classnames("FlashCard", { flipped: props.flipped })}
-    onClick={() => props.onFlip(props.id)}
-  >
-    <h2>{props.flipped ? props.back : props.front}</h2>
+  <div className={classnames("flip-container", { hover: props.flipped })}>
+    <div className="flipper">
+      <div className="front">
+        <h3>{props.front}</h3>
+      </div>
+      <div className="back">
+        <h3>{props.back}</h3>
+      </div>
+    </div>
   </div>
 );
 
