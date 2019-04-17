@@ -1,6 +1,7 @@
 import React from 'react';
 import FlashCard from './FlashCard';
 import './FlashCardContainer.css';
+import CreateFlashCardForm from './CreateFlashCardForm';
 
 export interface IFlashCard {
   id: number;
@@ -13,6 +14,11 @@ interface IFlashCardsContainerState {
   cards: IFlashCard[];
 }
 
+export interface ICardInput {
+  front: string;
+  back: string;
+}
+
 class FlashCardsContainer extends React.Component<
   {},
   IFlashCardsContainerState
@@ -21,23 +27,27 @@ class FlashCardsContainer extends React.Component<
     cards: [
       {
         front: "Hoe voeg je meerdere properties in 1x toe aan een component?",
-        back: "Gebruik de spread operator! { ...props }",
+        back: "Gebruik de spread operator! { ...props }"
       },
       {
-        front: "Wanneer zou je PropTypes gebruiken voor type safety als die al door TypeScript interfaces wordt gewaarborgd?",
-        back: "Als je components ook in JS projecten worden gebruikt.",
+        front:
+          "Wanneer zou je PropTypes gebruiken voor type safety als die al door TypeScript interfaces wordt gewaarborgd?",
+        back: "Als je components ook in JS projecten worden gebruikt."
       },
       {
-        front: "Met welk commando creëer je een nieuwe React app met TypeScript support?",
-        back: "npx create-react-app --typescript",
+        front:
+          "Met welk commando creëer je een nieuwe React app met TypeScript support?",
+        back: "npx create-react-app --typescript"
       },
       {
-        front: "Wanneer zou je PropTypes gebruiken voor type safety als die al door TypeScript interfaces wordt gewaarborgd?",
-        back: "Als je components ook in JS projecten worden gebruikt.",
+        front:
+          "Wanneer zou je PropTypes gebruiken voor type safety als die al door TypeScript interfaces wordt gewaarborgd?",
+        back: "Als je components ook in JS projecten worden gebruikt."
       },
       {
-        front: "Met welk commando creëer je een nieuwe React app met TypeScript support?",
-        back: "npx create-react-app --typescript",
+        front:
+          "Met welk commando creëer je een nieuwe React app met TypeScript support?",
+        back: "npx create-react-app --typescript"
       }
     ].map((c, index) => ({ id: index + 1, ...c, flipped: false }))
   };
@@ -47,6 +57,7 @@ class FlashCardsContainer extends React.Component<
       <div className="FlashCardContainer">
         <header>
           <h1>Flashcards</h1>
+          <CreateFlashCardForm addCard={this.addCard} />
         </header>
         <div className="cards">
           {this.state.cards.map(card => (
@@ -60,11 +71,28 @@ class FlashCardsContainer extends React.Component<
   public flipCard = (id: number) => {
     this.setState({
       cards: this.state.cards.map(card => {
-        if (card.id === id) { return { ...card, flipped: !card.flipped }; }
+        if (card.id === id) {
+          return { ...card, flipped: !card.flipped };
+        }
         return card;
       })
-    })
-  }
+    });
+  };
+
+  public addCard = ({ front, back }: ICardInput) => {
+    const { cards } = this.state;
+
+    this.setState({
+      cards: [
+        {
+          front,
+          back,
+          id: cards.length + 1,
+          flipped: false
+        }
+      ].concat(cards)
+    });
+  };
 }
 
 export default FlashCardsContainer;
