@@ -1,7 +1,7 @@
 import React from 'react';
 import FlashCard from './FlashCard';
 import './FlashCardContainer.css';
-import CreateFlashCardForm from './CreateFlashCardForm';
+import FlashCardForm from './FlashCardForm';
 
 export interface IFlashCard {
   id: number;
@@ -15,6 +15,7 @@ interface IFlashCardsContainerState {
 }
 
 export interface ICardInput {
+  id?: number;
   front: string;
   back: string;
 }
@@ -57,11 +58,16 @@ class FlashCardsContainer extends React.Component<
       <div className="FlashCardContainer">
         <header>
           <h1>Flashcards</h1>
-          <CreateFlashCardForm addCard={this.addCard} />
+          <FlashCardForm saveCard={this.saveCard} />
         </header>
         <div className="cards">
           {this.state.cards.map(card => (
-            <FlashCard key={card.id} onFlip={this.flipCard} {...card} />
+            <FlashCard
+              key={card.id}
+              onFlip={this.flipCard}
+              saveCard={this.saveCard}
+              {...card}
+            />
           ))}
         </div>
       </div>
@@ -79,8 +85,20 @@ class FlashCardsContainer extends React.Component<
     });
   };
 
-  public addCard = ({ front, back }: ICardInput) => {
+  public saveCard = ({ id, front, back }: ICardInput) => {
     const { cards } = this.state;
+
+    if (id) {
+      return this.setState({
+        cards: this.state.cards.map(card => {
+          if (card.id === id) {
+            return { ...card, front, back };
+          }
+
+          return card;
+        })
+      })
+    }
 
     this.setState({
       cards: [

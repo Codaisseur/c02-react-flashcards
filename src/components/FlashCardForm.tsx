@@ -1,19 +1,27 @@
 import React from 'react';
-import { ICardInput } from './FlashCardsContainer';
+import { ICardInput, IFlashCard } from './FlashCardsContainer';
 
-export interface ICreateFlashCardForm {
-  addCard: (input: ICardInput) => void;
+export interface IFlashCardForm {
+  card?: IFlashCard;
+  saveCard: (input: ICardInput) => void;
 }
 
-interface ICreateFlashCardFormState extends ICardInput {
-  [attribute: string]: string;
+interface IFlashCardFormState extends ICardInput {
+  [key: string]: any;
 }
 
-class CreateFlashCardForm extends React.Component<
-  ICreateFlashCardForm,
-  ICreateFlashCardFormState
+class FlashCardForm extends React.Component<
+  IFlashCardForm,
+  IFlashCardFormState
 > {
-  public state: ICreateFlashCardFormState = { front: "", back: "" };
+  public constructor(props: IFlashCardForm) {
+    super(props);
+    const { card } = props;
+
+    this.state = card
+      ? { front: card.front, back: card.back }
+      : { front: '', back: '' };
+  }
 
   public handleChange = (attribute: "front" | "back") => (event: any) => {
     this.setState({ [attribute]: event.target.value });
@@ -21,8 +29,12 @@ class CreateFlashCardForm extends React.Component<
 
   public handleSubmit = (event: any) => {
     event.preventDefault();
-    this.props.addCard(this.state);
-    this.setState({ front: '', back: '' });
+    const { card } = this.props;
+    this.props.saveCard({ ...(card || {}), ...this.state });
+
+    if (!card) {
+      this.setState({ front: "", back: "" });
+    }
   }
 
   public render() {
@@ -51,11 +63,11 @@ class CreateFlashCardForm extends React.Component<
         </div>
 
         <div>
-          <input type="submit" value="Add Card" />
+          <input type="submit" value="Save Card" />
         </div>
       </form>
     );
   }
 }
 
-export default CreateFlashCardForm;
+export default FlashCardForm;
